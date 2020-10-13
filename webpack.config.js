@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -49,12 +50,16 @@ module.exports = {
     writeToDisk: true,
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: "./src/index.html",
     }),
     new CopyPlugin({
-      patterns: [{ from: "src/favicon.ico", to: "favicon.ico" }],
-      patterns: [{ from: "src/ada-logo.png", to: "ada-logo.png" }],
+      patterns: [
+        { from: "src/favicon.ico", to: "favicon.ico" },
+        { from: "src/img", to: "img" },
+        { from: "src/manifest.json", to: "manifest.json" },
+      ],
     }),
     new WorkboxWebpackPlugin.GenerateSW({
       clientsClaim: true,
